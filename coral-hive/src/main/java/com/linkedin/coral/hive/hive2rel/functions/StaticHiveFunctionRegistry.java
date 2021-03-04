@@ -106,6 +106,7 @@ public class StaticHiveFunctionRegistry implements HiveFunctionRegistry {
     addFunctionEntry("map", MAP_VALUE_CONSTRUCTOR);
     addFunctionEntry("named_struct", HiveNamedStructFunction.NAMED_STRUCT);
     addFunctionEntry("generic_project", GenericProjectFunction.GENERIC_PROJECT);
+    addFunctionEntry("json_tuple", JsonTupleFunction.JSON_TUPLE);
 
     // conversion functions
     createAddUserDefinedFunction("binary", HiveReturnTypes.BINARY,

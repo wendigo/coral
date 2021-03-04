@@ -5,6 +5,8 @@
  */
 package com.linkedin.coral.presto.rel2presto;
 
+import com.linkedin.coral.hive.hive2rel.functions.JsonTupleFunction;
+import com.linkedin.coral.presto.rel2presto.functions.JsonTupleToPrestoConverter;
 import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.RelShuttle;
 import org.apache.calcite.rel.RelShuttleImpl;
@@ -35,6 +37,7 @@ import com.linkedin.coral.com.google.common.collect.ImmutableMultimap;
 import com.linkedin.coral.com.google.common.collect.Multimap;
 import com.linkedin.coral.hive.hive2rel.functions.GenericProjectFunction;
 import com.linkedin.coral.presto.rel2presto.functions.GenericProjectToPrestoConverter;
+import org.apache.calcite.sql.validate.SqlUserDefinedFunction;
 
 
 public class Calcite2PrestoUDFConverter {
@@ -158,6 +161,10 @@ public class Calcite2PrestoUDFConverter {
       //   - the return type varies based on a desired schema to be projected
       if (call.getOperator() instanceof GenericProjectFunction) {
         return GenericProjectToPrestoConverter.convertGenericProject(rexBuilder, call);
+      }
+
+      if (call.getOperator() instanceof JsonTupleFunction) {
+         return JsonTupleToPrestoConverter.convert(rexBuilder, call);
       }
 
       final UDFTransformer transformer =
